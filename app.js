@@ -1,5 +1,4 @@
 var data;
-
 var filters = [[],[]]; // tableau des filtres, indice 0 : arrondissements, indice 1 : disponibilité (ALL,OUI,NON)
 $btn = $(".btn"); // tous les boutons
 $arrdts = $('.arrdt-filter'); // tous les boutons arrondissements
@@ -8,10 +7,10 @@ $submitFilter = $('.submit-filter'); // bouton confirmation des filtres
 $reinit = $('.reinitialiser'); // bouton rénitialiser
 $connexion = $('#connexion-btn'); // bouton navbar connexion
 $coForm = $('#co-form'); // formulaire de connexion apres click sur bouton connexion
+$rubriques = $('.rubriques') // rubriques du menu
 
 $sidePanel = $("#side-panel"); // panneau des filtres apres click sur bouton filtres
 $filterBtn = $('.filter-btn');  // bouton filtrer à droite de l'écran
-
 
 // Variable qui stock le design de la carte
 
@@ -30,13 +29,36 @@ var map = L.map('map', {
     zoomControl: false
 });
 
+// Custom icon
+
+
+var Fontaine = L.Icon.extend({
+    options: {
+        iconSize: [45, 45],
+        shadowSize: [50, 64],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -76]
+    }
+});
+
+var dispoFontaine = new Fontaine({
+    iconUrl: 'assets/fountain.png'
+})
+
+var pasDispoFontaine = new Fontaine({
+    iconUrl: 'assets/noFountain.png'
+})
+
+var favorisFontaine = new Fontaine({
+    iconUrl: 'assets/favorisFountain.png'
+})
+
 
 // Déplacement des boutons de zoom et dézoom en bas a droite, par défaut en haut a gauche
 
 L.control.zoom({
     position: 'bottomright'
 }).addTo(map);
-
 
 
 // Click sur le bouton de filtres a droite, affiche ou retire le panneau de filtres
@@ -48,7 +70,7 @@ $filterBtn.on("click", function(){
     }   
     else{
         $sidePanel.css("display","flex");
-        $filterBtn.css("right","290px");
+        $filterBtn.css("right","260px");
     }
 });
 
@@ -76,11 +98,14 @@ async function init(){
     await fetch("/fontaines-a-boire.json")
     .then(reponse => reponse.json())
     .then(reponse2 => data = reponse2);
-    let dispoFilter;
     filters[1].length === 1 ? dispoFilter = filters[1][0] : dispoFilter = "ALL";
     var markers = new L.MarkerClusterGroup({disableClusteringAtZoom: 16});
+    console.log(data[0])
     for(let i=0; i<data.length; i++){
-        let mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]]);
+        let mk;
+        if (data[i].fields.dispo === "OUI") mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]], { icon: dispoFontaine });
+        else mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]], { icon: pasDispoFontaine });
+        
         if(data[i].fields.commune.includes("PARIS")){
             markers.addLayer(mk);
         }
@@ -145,11 +170,12 @@ $reinit.click(async function() {
     await fetch("/fontaines-a-boire.json")
     .then(reponse => reponse.json())
     .then(reponse2 => data = reponse2);
-    let dispoFilter;
     filters[1].length === 1 ? dispoFilter = filters[1][0] : dispoFilter = "ALL";
     var markers = new L.MarkerClusterGroup({disableClusteringAtZoom: 16});
     for(let i=0; i<data.length; i++){
-        let mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]]);
+        let mk;
+        if (data[i].fields.dispo === "OUI") mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]], { icon: dispoFontaine });
+        else mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]], { icon: pasDispoFontaine });
         if(data[i].fields.commune.includes("PARIS")){
             markers.addLayer(mk);
         }
@@ -192,7 +218,9 @@ async function dataCollect(){
     filters[1].length === 1 ? dispoFilter = filters[1][0] : dispoFilter = "ALL";
     mkGroupCluster = new L.MarkerClusterGroup({disableClusteringAtZoom: 15});
     for(let i=0; i<data.length; i++){
-        let mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]]);
+        let mk;
+        if (data[i].fields.dispo === "OUI") mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]], { icon: dispoFontaine });
+        else mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]], { icon: pasDispoFontaine });
         for(let j=0; j<filters[0].length; j++){
             if(data[i].fields.commune.includes(`PARIS ${filters[0][j]}E`) && data[i].fields.dispo !== dispoFilter){
                 mkGroupCluster.addLayer(mk);

@@ -3,8 +3,10 @@
 
 html,
 body {
-    padding: 0;
     margin: 0;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
 }
 
 #content {
@@ -13,191 +15,132 @@ body {
     flex-direction: column;
 }
 
-#logo {
-    height: 90px;
-    border-radius: 15px;
-    padding: 12px;
-
-}
+/* Style du header */
 
 header {
     font-family: 'Montserrat', sans-serif;
     height: 100px;
-    background-color: rgb(49, 72, 146);
+    background-color: rgb(92, 211, 155);
     z-index: 999;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
+    padding: 0 20px;
 }
 
-footer {
-    height: 200px;
-    background-color: rgb(14, 17, 54);
-    margin-top: 725px;
+#left-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-#menu {
+#logo {
+    height: 90px;
+    border-radius: 15px;
+
+}
+
+.hamb-menu {
+    visibility: hidden;
+}
+
+
+.rubriques {
     display: flex;
     align-items: center;
 }
 
-header #menu #rubriques a {
-    color: white;
-    text-decoration-line: underline;
+.link {
+    display: flex;
+    align-items: center;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
     font-size: 1.2em;
     font-weight: 550;
-    padding: 38px 20px;
+    padding: 0 20px;
+    height: 100px;
 }
 
-.hover-menu:hover {
-    background-color: rgb(84, 122, 247);
-    transition: all 0.3s;
-}
-
-#connexion {
-    display: flex;
-    flex-direction: column;
-    margin-left: 100px;
-    cursor: pointer;
-}
-
-#connexion-btn {
-    display: flex;
-    height: 80px;
-    width: 160px;
-    background-color: rgb(20, 26, 134);
-    align-items: center;
-    justify-content: center;
-    color: rgb(255, 255, 255);
-    border-radius: 5px;
-    padding: 2px;
-    font-size: 1em;
-    border: 2px solid rgb(12, 12, 90);
-}
-
-
-#co-form {
-    display: none;
-    flex-direction: column;
-    padding: 10px;
-    width: 145px;
-    height: 150px;
-    position: absolute;
-    margin-top: 88px;
-    background-color: rgb(20, 26, 134);
-    border: 2px solid rgb(12, 12, 90);
-    border-radius: 15px;
-    justify-content: space-evenly;
-    /* display : none; */
-}
-
-#co-form input {
-    padding: 8px;
-    border-radius: 5px;
-}
-
-#co-form input:hover {
-    opacity: 0.85;
-    transition: all 0.5s;
-}
-
-#submit {
-    cursor: pointer;
-}
-
-.co {
+.link:hover {
+    background-color: rgb(81, 184, 136);
     color: white;
-    margin: 0 6%;
+    transition: all 0.4s;
 }
 
-
-#map {
-    margin-top: 100px;
-    width: 100vw;
-    height: 75%;
-    position: absolute;
-    right: 0;
-}
-
-.btn {
-    width: 60px;
-    height: 30px;
-    background-color: rgb(230, 230, 230);
-    border: 1px solid rgb(22, 22, 22);
-}
-
-#arrdt-container {
+.icon {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-
-}
-
-.dispo-container {
-    display: flex;
-    justify-content: center;
-
-}
-
-.dispo-filter {
-    width: 100px;
-}
-
-p {
-    color: white;
-    font-size: 1.1em;
-}
-
-.submit-filter {
-    margin-top: 50px;
-    margin-bottom: 10px;
-}
-
-.solo-btn {
-    width: 150px;
-    height: 40px;
-}
-
-.hover-style:hover {
-    opacity: 0.7;
-    transition: all 0.3s;
-}
-
-/*Style du side panel et de ses composants*/
-
-#side-panel {
-    border: 1px solid rgb(187, 186, 186);
-    z-index: 999;
-    display: none;
     flex-direction: column;
-    width: 15%;
-    background-color: rgba(255, 250, 250, 0.5);
-    backdrop-filter: blur(1px);
-    border-radius: 20px;
+    height: 90px;
     align-items: center;
-    position: absolute;
-    right: 30px;
-    top: 210px;
-    padding: 20px;
-}
-
-#side-panel p {
-    color: black;
-    font-weight: bold;
-}
-
-.filter-btn {
-    position: absolute;
-    border: 1px solid rgb(187, 186, 186);
-    right: 40px;
-    top: 162px;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    padding: 6px;
-    width: 50px;
-    text-align: center;
+    justify-content: center;
+    gap: 25px;
+    width: 120px;
     cursor: pointer;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 5px;
+    padding-top: 10px;
+}
+
+.icon:hover {
+    background-color: rgb(81, 184, 136);
+    color: white;
+    transition: all 0.4s;
+}
+
+/* Afficher Le menu hamburger, créer le vollet menu redimentionner 
+les espaces sur les côtés du menu */
+
+@media screen and (max-width : 1100px) {
+
+    .left {
+        margin-left: 0% !important;
+        transition: all 0.5s;
+    }
+
+    .hamb-menu {
+        visibility: visible;
+        z-index: 999;
+        color: rgb(0, 0, 0);
+    }
+
+    .rubriques {
+        flex-direction: column;
+        position: absolute;
+        top: 100px;
+        left: 0;
+        width: 400px;
+        align-items: center;
+        height: calc(100% - 125px);
+        margin-left: -102%;
+        transition: all 0.75s;
+        padding: 10px 0;
+        justify-content: center;
+        z-index: 999;
+        background-color: rgb(92, 211, 155);
+        border: 2px solid rgb(78, 168, 119);
+        border-top-right-radius: 10px;
+    }
+
+    header {
+        padding-left: 40px;
+    }
+
+    .link {
+        justify-content: center;
+        width: 360px;
+    }
+
+
+}
+
+
+/* Réduire la taille du vollet menu et des rubriques */
+
+@media screen and (max-width : 690px) {
+    .rubriques {
+        width: 300px;
+    }
+
+    .link {
+        justify-content: center;
+        width: 260px;
+    }
 }

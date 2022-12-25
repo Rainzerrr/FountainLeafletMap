@@ -1,0 +1,95 @@
+/* Style de la map */
+
+#map {
+    margin-top: 100px;
+    width: 100vw;
+    height: calc(100% - 100px);
+    position: absolute;
+    right: 0;
+    z-index: 1;
+}
+
+
+
+/*Style du side panel et de ses composants*/
+
+#side-panel {
+    border: 1px solid rgb(187, 186, 186);
+    z-index: 2;
+    display: none;
+    flex-direction: column;
+    width: 250px;
+    background-color: rgba(255, 250, 250, 0.5);
+    backdrop-filter: blur(1px);
+    border-radius: 20px;
+    align-items: center;
+    position: absolute;
+    right: 30px;
+    top: 210px;
+    padding: 20px;
+}
+
+#side-panel p {
+    color: black;
+    font-weight: bold;
+}
+
+.filter-btn {
+    position: absolute;
+    border: 1px solid rgb(187, 186, 186);
+    right: 40px;
+    top: 162px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    width: 50px;
+    text-align: center;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+}
+
+.btn {
+    width: 60px;
+    height: 30px;
+    background-color: rgb(230, 230, 230);
+    border: 1px solid rgb(22, 22, 22);
+}
+
+#arrdt-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+.dispo-container {
+    display: flex;
+    justify-content: center;
+
+}
+
+.dispo-filter {
+    width: 100px;
+}
+
+p {
+    color: white;
+    font-size: 1.1em;
+}
+
+.submit-filter {
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+.solo-btn {
+    width: 150px;
+    height: 40px;
+}
+
+.hover-style:hover {
+    opacity: 0.7;
+    transition: all 0.3s;
+}

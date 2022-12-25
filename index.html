@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Leaflet</title>
+    <link rel="stylesheet" href="accueil.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
         integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
@@ -21,28 +22,22 @@
 
     <div id="content">
         <header>
-            <a href="#"><img id="logo" src="assets/logo.png"></a>
-            <div id="menu">
-                <div id="rubriques">
-                    <a class="hover-menu" href="#">Accueil</a>
-                    <a class="hover-menu" href="#">Favoris</a>
-                    <a class="hover-menu" href="#">Signaler</a>
-                    <a class="hover-menu" href="#">Contact</a>
-                    <a class="hover-menu" href="#">Fr </a>
-                </div>
-
-                <div id="connexion">
-                    <div id="connexion-btn">
-                        <i class="co fa-solid fa-user fa-xl"></i>
-                        <a class="co">Connexion</a>
-                    </div>
-                    <form id="co-form" methode="post">
-                        <input type="text" id="name" name="name" placeholder="Username" required>
-                        <input type="text" id="pwd" name="pwd" placeholder="Password" required>
-                        <input type="submit" id="submit">
-                    </form>
+            <div id="left-container">
+                <i class="fa-solid fa-bars fa-2xl hamb-menu"></i>
+                <a href="#"><img id="logo" src="assets/logo.png"></a>
+                <div class="rubriques">
+                    <a class="link" href="#">Accueil</a>
+                    <a class="link" href="#">Favoris</a>
+                    <a class="link" href="#">Signaler</a>
+                    <a class="link" href="#">Contact</a>
                 </div>
             </div>
+
+            <div class="icon">
+                <i class="co fa-solid fa-user fa-xl"></i>
+                <a class="co">S'identifier</a>
+            </div>
+
         </header>
 
         <div id="map"></div>
@@ -52,26 +47,26 @@
         <div id="side-panel">
             <p>Arrondissements</p>
             <div id="arrdt-container">
-                <button class="btn hover-style arrdt-filter" value="1">1er</button>
-                <button class="btn hover-style arrdt-filter" value="2">2eme</button>
-                <button class="btn hover-style arrdt-filter" value="3">3eme</button>
-                <button class="btn hover-style arrdt-filter" value="4">4eme</button>
-                <button class="btn hover-style arrdt-filter" value="5">5eme</button>
-                <button class="btn hover-style arrdt-filter" value="6">6eme</button>
-                <button class="btn hover-style arrdt-filter" value="7">7eme</button>
-                <button class="btn hover-style arrdt-filter" value="8">8eme</button>
-                <button class="btn hover-style arrdt-filter" value="9">9eme</button>
-                <button class="btn hover-style arrdt-filter" value="10">10eme</button>
-                <button class="btn hover-style arrdt-filter" value="11">11eme</button>
-                <button class="btn hover-style arrdt-filter" value="12">12eme</button>
-                <button class="btn hover-style arrdt-filter" value="13">13eme</button>
-                <button class="btn hover-style arrdt-filter" value="14">14eme</button>
-                <button class="btn hover-style arrdt-filter" value="15">15eme</button>
-                <button class="btn hover-style arrdt-filter" value="16">16eme</button>
-                <button class="btn hover-style arrdt-filter" value="17">17eme</button>
-                <button class="btn hover-style arrdt-filter" value="18">18eme</button>
-                <button class="btn hover-style arrdt-filter" value="19">19eme</button>
-                <button class="btn hover-style arrdt-filter" value="20">20eme</button>
+                <button class="btn hover-style arrdt-filter" value="1">1</button>
+                <button class="btn hover-style arrdt-filter" value="2">2</button>
+                <button class="btn hover-style arrdt-filter" value="3">3</button>
+                <button class="btn hover-style arrdt-filter" value="4">4</button>
+                <button class="btn hover-style arrdt-filter" value="5">5</button>
+                <button class="btn hover-style arrdt-filter" value="6">6</button>
+                <button class="btn hover-style arrdt-filter" value="7">7</button>
+                <button class="btn hover-style arrdt-filter" value="8">8</button>
+                <button class="btn hover-style arrdt-filter" value="9">9</button>
+                <button class="btn hover-style arrdt-filter" value="10">10</button>
+                <button class="btn hover-style arrdt-filter" value="11">11</button>
+                <button class="btn hover-style arrdt-filter" value="12">12</button>
+                <button class="btn hover-style arrdt-filter" value="13">13</button>
+                <button class="btn hover-style arrdt-filter" value="14">14</button>
+                <button class="btn hover-style arrdt-filter" value="15">15</button>
+                <button class="btn hover-style arrdt-filter" value="16">16</button>
+                <button class="btn hover-style arrdt-filter" value="17">17</button>
+                <button class="btn hover-style arrdt-filter" value="18">18</button>
+                <button class="btn hover-style arrdt-filter" value="19">19</button>
+                <button class="btn hover-style arrdt-filter" value="20">20</button>
             </div>
 
             <p>Disponibilité (Optionnel)</p>
@@ -84,12 +79,12 @@
             <button class="solo-btn hover-style reinitialiser">Reinitialiser</button>
         </div>
 
-        <footer></footer>
-
     </div>
+    <footer></footer>
 
 
     <script src="app.js"></script>
+    <script src="header.js"></script>
     <script src="dist/leaflet.markercluster.js"></script>
 </body>
 
