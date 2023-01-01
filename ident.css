@@ -1,12 +1,92 @@
+body {
+    background-color: gray;
+    height: 100vh;
+    font-family: arial, sans-serif;
+}
+
+.container {
+    position: relative;
+}
+
 .formulaires {
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
 }
 
 form {
     display: flex;
     flex-direction: column;
+    background: rgba(255, 255, 255, .3);
+    padding: 3rem;
+    height: 380px;
+    border-radius: 20px;
+    border-left: 1px solid rgba(255, 255, 255, .3);
+    border-top: 1px solid rgba(255, 255, 255, .3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    -moz-backdrop-filter: blur(10px);
+    box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, .2);
+    align-items: center;
+    margin: 50px 0;
 }
+
+.form-title {
+    color: white;
+    font-weight: 500;
+    opacity: .7;
+    font-size: 1.4rem;
+    margin-bottom: 60px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+}
+
+.form-title {
+    color: white;
+    font-weight: 500;
+    opacity: .7;
+    font-size: 1.4rem;
+    margin-bottom: 60px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+}
+
+
+input {
+    background: transparent;
+    border: none;
+    border-left: 1px solid rgba(255, 255, 255, .3);
+    border-top: 1px solid rgba(255, 255, 255, .3);
+    padding: 1rem;
+    width: 200px;
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    -moz-backdrop-filter: blur(5px);
+    box-shadow: 4px 4px 60px rgba(0, 0, 0, .2);
+    color: white;
+    font-weight: 500;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+    transition: all .3s;
+    margin-bottom: 2em;
+}
+
+input:hover,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+}
+
+input[type="button"] {
+    margin-top: 10px;
+    width: 150px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+::placeholder {
+    color: #fff;
+}
+
 
 @media screen and (max-width : 1100px) {
     .formulaires {

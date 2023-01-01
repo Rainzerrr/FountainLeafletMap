@@ -92,26 +92,37 @@ $(document).ready(async function(){
     await init()
 })
 
+
 // Affichage de tous les markers de fontaines dans la carte
 
 async function init(){
-    await fetch("/fontaines-a-boire.json")
+    await fetch("https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=&rows=10000&facet=type_objet&facet=modele&facet=commune&facet=dispo")
     .then(reponse => reponse.json())
     .then(reponse2 => data = reponse2);
     filters[1].length === 1 ? dispoFilter = filters[1][0] : dispoFilter = "ALL";
     var markers = new L.MarkerClusterGroup({disableClusteringAtZoom: 16});
-    console.log(data[0])
-    for(let i=0; i<data.length; i++){
+    console.log(data.records);
+    for(let i=0; i<data.records.length; i++){
         let mk;
-        if (data[i].fields.dispo === "OUI") mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]], { icon: dispoFontaine });
-        else mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]], { icon: pasDispoFontaine });
+        let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet
+        if (data.records[i].fields.dispo === "OUI") mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon: dispoFontaine });
+        else mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon: pasDispoFontaine });
         
-        if(data[i].fields.commune.includes("PARIS")){
+        if (data.records[i].fields.commune.includes("PARIS")){
+            mk.bindPopup(text + "<br/><br/>" + "<button onclick=handleFavoris()>Favoris</button>" + "<button onclick=handleSignaler()>Signaler</button> ");
             markers.addLayer(mk);
         }
     }
 
     map.addLayer(markers);
+}
+
+function handleFavoris(){
+    alert("favoris");
+}
+
+function handleSignaler() {
+    alert("signaler");
 }
 
 // Click sur chaque bouton des arrondissements, dès que cliqué numéro correspondant ajouté/retiré dans/de la liste des filtres indice 0
@@ -167,16 +178,20 @@ $reinit.click(async function() {
     }).addTo(map);
     $btn.css("background-color","rgb(230, 230, 230)");
     filters = [[],[]]
-    await fetch("/fontaines-a-boire.json")
-    .then(reponse => reponse.json())
-    .then(reponse2 => data = reponse2);
+    await fetch("https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=&rows=10000&facet=type_objet&facet=modele&facet=commune&facet=dispo")
+        .then(reponse => reponse.json())
+        .then(reponse2 => data = reponse2);
     filters[1].length === 1 ? dispoFilter = filters[1][0] : dispoFilter = "ALL";
-    var markers = new L.MarkerClusterGroup({disableClusteringAtZoom: 16});
-    for(let i=0; i<data.length; i++){
+    var markers = new L.MarkerClusterGroup({ disableClusteringAtZoom: 16 });
+    console.log(data.records);
+    for (let i = 0; i < data.records.length; i++) {
         let mk;
-        if (data[i].fields.dispo === "OUI") mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]], { icon: dispoFontaine });
-        else mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]], { icon: pasDispoFontaine });
-        if(data[i].fields.commune.includes("PARIS")){
+        let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet
+        if (data.records[i].fields.dispo === "OUI") mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon: dispoFontaine });
+        else mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon: pasDispoFontaine });
+
+        if (data.records[i].fields.commune.includes("PARIS")) {
+            mk.bindPopup(text + "<br/><br/>" + "<button onclick=handleFavoris()>Favoris</button>" + "<button onclick=handleSignaler()>Signaler</button> ");
             markers.addLayer(mk);
         }
     }
@@ -196,7 +211,7 @@ $submitFilter.on("click", function() {
 
 async function dataCollect(){
     if(filters[0].length === 0){
-        alert("Il faut sélectionner au moins 1 arrondissement !");
+        alert("Il faut sélectionner au moins 1 arrondissement !\nReinitialiser pour afficher tous les markers.");
     }
 
     else{
@@ -211,18 +226,20 @@ async function dataCollect(){
     L.control.zoom({
         position: 'bottomright'
     }).addTo(map);
-    await fetch("/fontaines-a-boire.json")
+        await fetch("https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=&rows=10000&facet=type_objet&facet=modele&facet=commune&facet=dispo")
     .then(reponse => reponse.json())
     .then(reponse2 => data = reponse2);
     let dispoFilter;
     filters[1].length === 1 ? dispoFilter = filters[1][0] : dispoFilter = "ALL";
     mkGroupCluster = new L.MarkerClusterGroup({disableClusteringAtZoom: 15});
-    for(let i=0; i<data.length; i++){
+    for(let i=0; i<data.records.length; i++){
         let mk;
-        if (data[i].fields.dispo === "OUI") mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]], { icon: dispoFontaine });
-        else mk = L.marker([data[i].fields.geo_point_2d[0], data[i].fields.geo_point_2d[1]], { icon: pasDispoFontaine });
+        let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet
+        if (data.records[i].fields.dispo === "OUI") mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon: dispoFontaine });
+        else mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon: pasDispoFontaine });
         for(let j=0; j<filters[0].length; j++){
-            if(data[i].fields.commune.includes(`PARIS ${filters[0][j]}E`) && data[i].fields.dispo !== dispoFilter){
+            if (data.records[i].fields.commune.includes(`PARIS ${filters[0][j]}E`) && data.records[i].fields.dispo !== dispoFilter){
+                mk.bindPopup(text + "<br/><br/>" + "<button onclick=handleFavoris()>Favoris</button>" + "<button onclick=handleSignaler()>Signaler</button> ");
                 mkGroupCluster.addLayer(mk);
             }
         }

@@ -85,6 +85,10 @@ header {
     transition: all 0.4s;
 }
 
+.connexion {
+    display: none;
+}
+
 /* Afficher Le menu hamburger, créer le vollet menu redimentionner 
 les espaces sur les côtés du menu */
 
@@ -99,6 +103,7 @@ les espaces sur les côtés du menu */
         visibility: visible;
         z-index: 999;
         color: rgb(0, 0, 0);
+        cursor: pointer;
     }
 
     .rubriques {

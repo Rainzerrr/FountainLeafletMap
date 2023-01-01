@@ -12,5 +12,5 @@ $hambMenu.on("click", function () {
 // Click sur le lien vers l'identification du user
 
 $identification.on("click", function () {
-    window.location.href = 'ident.html';
+    window.location.href = 'ident.php';
 })

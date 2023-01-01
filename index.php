@@ -1,3 +1,8 @@
+<?php
+session_start();
+$bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root', '');
+?>
+
 <!doctype html>
 <html lang="fr">
 
@@ -6,15 +11,11 @@
     <title>Leaflet</title>
     <link rel="stylesheet" href="accueil.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <link rel="stylesheet" href="dist/MarkerCluster.css">
     <link rel="stylesheet" href="dist/MarkerCluster.Default.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 
@@ -33,10 +34,33 @@
                 </div>
             </div>
 
-            <div class="icon">
-                <i class="co fa-solid fa-user fa-xl"></i>
-                <a class="co">S'identifier</a>
+            <div style="display : flex; align-items : center;">
+                <div class="icon">
+                    <i class="co fa-solid fa-user fa-xl"></i>
+                    <?php
+                    if (isset($_SESSION['mdp'])) {
+                    ?>
+                        <a><?= $_SESSION['pseudo'] ?></a>
+                    <?php
+
+
+                    } else {
+                    ?>
+                        <a>S'identifier</a>
+                    <?php
+                    }
+                    ?>
+                </div>
+                <?php
+                if (isset($_SESSION['mdp'])) {
+                ?>
+                    <a style="font-size : 1em; width: auto;" class="link" href="deconnexion.php">Déconnexion</a>
+                <?php
+                }
+                ?>
             </div>
+
+
 
         </header>
 
