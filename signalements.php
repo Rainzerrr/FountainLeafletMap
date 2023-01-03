@@ -11,6 +11,11 @@ if (isset($_SESSION['mdp']) and isset($_POST['lat'])) {
     header("Location : index.php");
 }
 
+$recupSignalement = $bdd->prepare('SELECT * FROM signalements');
+$recupSignalement->execute(array());
+$Signalement = $recupSignalement->fetchAll();
+echo json_encode($Signalement);
+
 function addSignalements($bdd, $user, $lat, $lng)
 {
     $insertSignalement = $bdd->prepare('INSERT INTO signalements(user, lat, lng)VALUES(?, ?, ?)');

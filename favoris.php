@@ -11,6 +11,14 @@ if (isset($_SESSION['mdp']) and isset($_POST['lat'])) {
     header("Location : index.php");
 }
 
+if (isset($_SESSION['mdp'])) {
+    $recupFavoris = $bdd->prepare('SELECT * FROM favoris WHERE user = ?');
+    $recupFavoris->execute(array($_SESSION['id']));
+    $favoris = $recupFavoris->fetchAll();
+
+    echo json_encode($favoris);
+}
+
 function addFavoris($bdd, $user, $lat, $lng)
 {
     $insertFavoris = $bdd->prepare('INSERT INTO favoris(user, lat, lng)VALUES(?, ?, ?)');

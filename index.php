@@ -1,20 +1,8 @@
 <?php
 session_start();
 $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root', '');
-if (isset($_POST['lat'])) {
-    $lat = $_POST['lat'];
-    $lng = $_POST['lng'];
-    addFavoris($bdd, $_SESSION['id'], $lat, $lng);
-}
-function addFavoris($bdd, $user, $lat, $lng)
-{
-    if ($user != 0) {
-        $insertFavoris = $bdd->prepare('INSERT INTO favoris(user, lat, lng)VALUES(?, ?, ?)');
-        $insertFavoris->execute(array($user, $lat, $lng));
-    } else {
-        echo "connectez vous pour favoris !";
-    }
-}
+
+
 ?>
 
 <!doctype html>
@@ -47,7 +35,7 @@ function addFavoris($bdd, $user, $lat, $lng)
                     <?php
                     if (isset($_SESSION['mdp'])) {
                     ?>
-                        <a class="link" href="#">Favoris</a>
+                        <a class="link" href="pageFavoris.php">Favoris</a>
                     <?php
 
                     } else {
@@ -60,7 +48,7 @@ function addFavoris($bdd, $user, $lat, $lng)
                     <?php
                     if (isset($_SESSION['mdp'])) {
                     ?>
-                        <a class="link" href="#">Signalements</a>
+                        <a class="link" href="pageSignalement">Signalements</a>
                     <?php
 
                     } else {
@@ -69,7 +57,7 @@ function addFavoris($bdd, $user, $lat, $lng)
                     <?php
                     }
                     ?>
-                    <a class="link" href="#">Contact</a>
+                    <a class="link" href="contact.php">Contact</a>
                 </div>
             </div>
 
@@ -106,7 +94,6 @@ function addFavoris($bdd, $user, $lat, $lng)
         <div id="map"></div>
 
         <i class="filter-btn fa-solid fa-filter fa-2x"></i>
-        <i class="add-btn fa-solid fa-map-pin fa-2x"></i>
 
         <div id="side-panel">
             <p>Arrondissements</p>
@@ -149,6 +136,10 @@ function addFavoris($bdd, $user, $lat, $lng)
 
     <script>
         var data;
+        var dataFavX = [];
+        var dataFavY = [];
+        var dataSignalementX = [];
+        var dataSignalementY = [];
         var filters = [
             [],
             []
@@ -160,7 +151,6 @@ function addFavoris($bdd, $user, $lat, $lng)
         $reinit = $('.reinitialiser'); // bouton rénitialiser
         $connexion = $('#connexion-btn'); // bouton navbar connexion
         $coForm = $('#co-form'); // formulaire de connexion apres click sur bouton connexion
-        $rubriques = $('.rubriques') // rubriques du menu
 
         $sidePanel = $("#side-panel"); // panneau des filtres apres click sur bouton filtres
         $filterBtn = $('.filter-btn'); // bouton filtrer à droite de l'écran
@@ -206,6 +196,14 @@ function addFavoris($bdd, $user, $lat, $lng)
             iconUrl: 'assets/favorisFountain.png'
         })
 
+        var signalFontaine = new Fontaine({
+            iconUrl: 'assets/warningFountain.png'
+        })
+
+        var signalFavorisFontaine = new Fontaine({
+            iconUrl: 'assets/signalFavorisFontaine.png'
+        })
+
 
         // Déplacement des boutons de zoom et dézoom en bas a droite, par défaut en haut a gauche
 
@@ -237,12 +235,46 @@ function addFavoris($bdd, $user, $lat, $lng)
         });
 
 
-        // Lancement du site
+        // Lancement du site (si user connecté, on charge ses données)
 
         $(document).ready(async function() {
-            await init()
+
+
+            await userDataCollect();
+            await init();
         })
 
+        // Collecte les données favoris de l'user, et des signalement global dans la base de données
+
+        async function userDataCollect() {
+            dataSignalementX = [];
+            dataSignalementY = [];
+            let dataS;
+            <?php
+            if (isset($_SESSION['mdp'])) {
+            ?>
+                let dataF;
+                await fetch("favoris.php")
+                    .then(reponse => reponse.json())
+                    .then(reponse2 => dataF = reponse2);
+                for (let i = 0; i < dataF.length; i++) {
+                    dataFavX.push(parseFloat(dataF[i][4]));
+                    dataFavY.push(parseFloat(dataF[i][5]));
+                }
+                console.log(dataFavX);
+            <?php
+            }
+            ?>
+
+            await fetch("signalements.php")
+                .then(reponse => reponse.json())
+                .then(reponse2 => dataS = reponse2);
+            for (let i = 0; i < dataS.length; i++) {
+                dataSignalementX.push(parseFloat(dataS[i][4]));
+                dataSignalementY.push(parseFloat(dataS[i][5]));
+            }
+            console.log(dataSignalementX);
+        }
 
         // Affichage de tous les markers de fontaines dans la carte
 
@@ -256,17 +288,53 @@ function addFavoris($bdd, $user, $lat, $lng)
             });
             for (let i = 0; i < data.records.length; i++) {
                 let mk;
-                let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet
-                if (data.records[i].fields.dispo === "OUI") mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                    icon: dispoFontaine
-                });
-                else mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                    icon: pasDispoFontaine
-                });
+                let signal = false;
+                let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet + "<br/> Dispo : " + data.records[i].fields.dispo;
+
+                if (dataSignalementX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataSignalementY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
+                    dataSignalementX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
+                    signal = true;
+                }
+
+                if (dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataFavY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
+                    dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
+                    console.log(signal);
+                    if (signal) {
+                        mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                            icon: signalFavorisFontaine
+                        });
+                    } else {
+                        mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                            icon: favorisFontaine
+                        });
+                    }
+
+                } else if (data.records[i].fields.dispo === "OUI") {
+                    if (signal) {
+                        mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                            icon: signalFontaine
+                        });
+                    } else {
+                        mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                            icon: dispoFontaine
+                        });
+                    }
+                } else {
+                    if (signal) {
+                        mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                            icon: signalFontaine
+                        });
+                    } else {
+                        mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                            icon: pasDispoFontaine
+                        });
+                    }
+                }
+
 
                 if (data.records[i].fields.commune.includes("PARIS")) {
                     mk.bindPopup(text + "<br/><br/>" + `<button onclick=handleFavoris(${data.records[i].fields.geo_point_2d})>Favoris</button>` +
-                        `<button onclick=handleSignaler(${data.records[i].fields.geo_point_2d})>Signaler</button>`);
+                        `<button classname = "signaler" onclick=handleSignaler(${data.records[i].fields.geo_point_2d})>Signaler</button>`);
                     markers.addLayer(mk);
                 }
             }
@@ -277,41 +345,67 @@ function addFavoris($bdd, $user, $lat, $lng)
         // Envoie les données du marker favoris au serveur
 
         function handleFavoris(lat, lng) {
-            var latlng = {};
-            latlng.lat = lat;
-            latlng.lng = lng;
-            $.ajax({
-                type: 'POST',
-                url: 'favoris.php',
-                data: latlng,
-                success: function(res) {
-                    console.log(res);
-                },
 
-                error: function(error) {
-                    console.log(error);
-                }
-            });
+            <?php
+            if (isset($_SESSION['mdp'])) {
+            ?>
+                var latlng = {};
+                latlng.lat = lat;
+                latlng.lng = lng;
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'favoris.php',
+                    data: latlng,
+                    success: function(res) {
+                        console.log(res);
+                    },
+
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+                document.location.reload();
+            <?php
+            } else {
+            ?>
+                document.location = "ident.php";
+            <?php
+            }
+            ?>
         }
 
         // Envoie les données du marker à signaler au serveur
 
         function handleSignaler(lat, lng) {
-            var latlng = {};
-            latlng.lat = lat;
-            latlng.lng = lng;
-            $.ajax({
-                type: 'POST',
-                url: 'signalements.php',
-                data: latlng,
-                success: function(res) {
-                    console.log(res);
-                },
 
-                error: function(error) {
-                    console.log(error);
-                }
-            });
+
+            <?php
+            if (isset($_SESSION['mdp'])) {
+            ?>
+                var latlng = {};
+                latlng.lat = lat;
+                latlng.lng = lng;
+                $.ajax({
+                    type: 'POST',
+                    url: 'signalements.php',
+                    data: latlng,
+                    success: function(res) {
+                        console.log(res);
+                    },
+
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+                document.location.reload();
+            <?php
+            } else {
+            ?>
+                document.location = "ident.php";
+            <?php
+            }
+            ?>
         }
 
         // Click sur chaque bouton des arrondissements, dès que cliqué numéro correspondant ajouté/retiré dans/de la liste des filtres indice 0
@@ -376,13 +470,49 @@ function addFavoris($bdd, $user, $lat, $lng)
             });
             for (let i = 0; i < data.records.length; i++) {
                 let mk;
-                let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet
-                if (data.records[i].fields.dispo === "OUI") mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                    icon: dispoFontaine
-                });
-                else mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                    icon: pasDispoFontaine
-                });
+                let signal = false;
+                let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet + "<br/> Dispo : " + data.records[i].fields.dispo;
+
+                if (dataSignalementX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataSignalementY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
+                    dataSignalementX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
+                    signal = true;
+                }
+
+                if (dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataFavY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
+                    dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
+                    console.log(signal);
+                    if (signal) {
+                        mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                            icon: signalFavorisFontaine
+                        });
+                    } else {
+                        mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                            icon: favorisFontaine
+                        });
+                    }
+
+                } else if (data.records[i].fields.dispo === "OUI") {
+                    if (signal) {
+                        mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                            icon: signalFontaine
+                        });
+                    } else {
+                        mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                            icon: dispoFontaine
+                        });
+                    }
+                } else {
+                    if (signal) {
+                        mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                            icon: signalFontaine
+                        });
+                    } else {
+                        mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                            icon: pasDispoFontaine
+                        });
+                    }
+                }
+
 
                 if (data.records[i].fields.commune.includes("PARIS")) {
                     mk.bindPopup(text + "<br/><br/>" + `<button onclick=handleFavoris(${data.records[i].fields.geo_point_2d})>Favoris</button>` +
@@ -429,13 +559,49 @@ function addFavoris($bdd, $user, $lat, $lng)
                 });
                 for (let i = 0; i < data.records.length; i++) {
                     let mk;
-                    let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet
-                    if (data.records[i].fields.dispo === "OUI") mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                        icon: dispoFontaine
-                    });
-                    else mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                        icon: pasDispoFontaine
-                    });
+                    let signal = false;
+                    let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet + "<br/> Dispo : " + data.records[i].fields.dispo;
+
+                    if (dataSignalementX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataSignalementY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
+                        dataSignalementX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
+                        signal = true;
+                    }
+
+                    if (dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataFavY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
+                        dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
+                        console.log(signal);
+                        if (signal) {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: signalFavorisFontaine
+                            });
+                        } else {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: favorisFontaine
+                            });
+                        }
+
+                    } else if (data.records[i].fields.dispo === "OUI") {
+                        if (signal) {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: signalFontaine
+                            });
+                        } else {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: dispoFontaine
+                            });
+                        }
+                    } else {
+                        if (signal) {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: signalFontaine
+                            });
+                        } else {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: pasDispoFontaine
+                            });
+                        }
+                    }
+
                     for (let j = 0; j < filters[0].length; j++) {
                         if (data.records[i].fields.commune.includes(`PARIS ${filters[0][j]}E`) && data.records[i].fields.dispo !== dispoFilter) {
                             mk.bindPopup(text + "<br/><br/>" + `<button onclick=handleFavoris(${data.records[i].fields.geo_point_2d})>Favoris</button>` +

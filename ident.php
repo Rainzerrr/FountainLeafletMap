@@ -70,7 +70,7 @@ if (isset($_POST['submit_connexion'])) {
                 <?php
                 if (isset($_SESSION['mdp'])) {
                 ?>
-                    <a class="link" href="#">Favoris</a>
+                    <a class="link" href="pageFavoris.php">Favoris</a>
                 <?php
 
                 } else {
@@ -92,7 +92,7 @@ if (isset($_POST['submit_connexion'])) {
                 <?php
                 }
                 ?>
-                <a class="link" href="#">Contact</a>
+                <a class="link" href="contact.php">Contact</a>
             </div>
         </div>
 

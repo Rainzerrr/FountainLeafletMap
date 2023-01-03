@@ -1,4 +1,5 @@
-$hambMenu = $('.hamb-menu')
+$hambMenu = $('.hamb-menu'); // bouton menu hamburger
+$rubriques = $('.rubriques'); // rubriques du menu
 $identification = $('.icon'); // lien vers l'identification du user
 
 
