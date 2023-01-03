@@ -62,11 +62,36 @@ if (isset($_POST['submit_connexion'])) {
     <header>
         <div id="left-container">
             <i class="fa-solid fa-bars fa-2xl hamb-menu"></i>
-            <a href="index.php"><img id="logo" src="assets/logo.png"></a>
+            <a href="#"><img id="logo" src="assets/logo.png"></a>
             <div class="rubriques">
+
                 <a class="link" href="index.php">Accueil</a>
-                <a class="link" href="#">Favoris</a>
-                <a class="link" href="#">Signaler</a>
+                <a class="link" href="#">Découvrir</a>
+                <?php
+                if (isset($_SESSION['mdp'])) {
+                ?>
+                    <a class="link" href="#">Favoris</a>
+                <?php
+
+                } else {
+                ?>
+                    <a class="link" href="ident.php">Favoris</a>
+                <?php
+                }
+                ?>
+
+                <?php
+                if (isset($_SESSION['mdp'])) {
+                ?>
+                    <a class="link" href="#">Signalements</a>
+                <?php
+
+                } else {
+                ?>
+                    <a class="link" href="ident.php">Signalements</a>
+                <?php
+                }
+                ?>
                 <a class="link" href="#">Contact</a>
             </div>
         </div>
