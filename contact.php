@@ -9,9 +9,11 @@ session_start();
 
 <head>
     <title>Page de contact</title>
+    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" type="text/css" href="contact.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -87,7 +89,7 @@ session_start();
         <form method="post">
             <h3>Formulaire de contact</h3>
             <div class="formdiv">
-                <label for="prenom">PrÃ©nom</label>
+                <label for="prenom">Prénom</label>
                 <input type="text" class="formtxt" id="prenom" name="prenom" required>
             </div>
             <div class="formdiv">

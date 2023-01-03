@@ -151,7 +151,6 @@ if (isset($_POST['submit_connexion'])) {
     </div>
 
 
-    <script src="app.js"></script>
     <script src="header.js"></script>
 </body>
 

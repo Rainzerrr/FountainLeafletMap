@@ -1,11 +1,14 @@
 $hambMenu = $('.hamb-menu'); // bouton menu hamburger
 $rubriques = $('.rubriques'); // rubriques du menu
 $identification = $('.icon'); // lien vers l'identification du user
+console.log($rubriques);
 
 
 // Click sur le menu hamburger qui ouvre le vollet des rubriques
 
+
 $hambMenu.on("click", function () {
+
     $rubriques.toggleClass("left");
 });
 

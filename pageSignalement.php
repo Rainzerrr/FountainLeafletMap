@@ -116,6 +116,7 @@ function addFavoris($bdd, $user, $lat, $lng)
         <?php
         ?>
         <H1>VOS SIGNALEMENTS</H1>
+        <script src="header.js"></script>
 </body>
 
 </html>

@@ -133,6 +133,8 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
     </div>
     <footer></footer>
 
+    <script src="header.js"></script>
+    <script src="dist/leaflet.markercluster.js"></script>
 
     <script>
         var data;
@@ -261,7 +263,6 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
                     dataFavX.push(parseFloat(dataF[i][4]));
                     dataFavY.push(parseFloat(dataF[i][5]));
                 }
-                console.log(dataFavX);
             <?php
             }
             ?>
@@ -273,7 +274,6 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
                 dataSignalementX.push(parseFloat(dataS[i][4]));
                 dataSignalementY.push(parseFloat(dataS[i][5]));
             }
-            console.log(dataSignalementX);
         }
 
         // Affichage de tous les markers de fontaines dans la carte
@@ -298,7 +298,6 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
 
                 if (dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataFavY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
                     dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
-                    console.log(signal);
                     if (signal) {
                         mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
                             icon: signalFavorisFontaine
@@ -480,7 +479,6 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
 
                 if (dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataFavY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
                     dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
-                    console.log(signal);
                     if (signal) {
                         mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
                             icon: signalFavorisFontaine
@@ -531,7 +529,6 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
             dataCollect();
         });
 
-
         // Collecte les données et les affiche en fonction des filtres choisis par l'utilisateur
 
         async function dataCollect() {
@@ -569,7 +566,7 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
 
                     if (dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataFavY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
                         dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
-                        console.log(signal);
+
                         if (signal) {
                             mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
                                 icon: signalFavorisFontaine
@@ -615,8 +612,6 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
 
         }
     </script>
-    <script src="header.js"></script>
-    <script src="dist/leaflet.markercluster.js"></script>
 </body>
 
 </html>
