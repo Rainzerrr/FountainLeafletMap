@@ -93,7 +93,7 @@ header {
 /* Afficher Le menu hamburger, créer le vollet menu redimentionner 
 les espaces sur les côtés du menu */
 
-@media screen and (max-width : 1100px) {
+@media screen and (max-width : 1230px) {
 
     .left {
         margin-left: 0% !important;

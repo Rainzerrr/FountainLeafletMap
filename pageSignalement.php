@@ -4,23 +4,10 @@ session_start();
 
 $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root', '');
 
-if (isset($_SESSION['mdp']) and isset($_POST['lat'])) {
-    $lat = $_POST['lat'];
-    $lng = $_POST['lng'];
-    addFavoris($bdd, $_SESSION['id'], $lat, $lng);
-    header("Location : index.php");
-}
 
 if (isset($_SESSION['mdp'])) {
-    $recupFavoris = $bdd->prepare('SELECT * FROM favoris WHERE user = ?');
-    $recupFavoris->execute(array($_SESSION['id']));
-    $favoris = $recupFavoris->fetchAll();
-}
-
-function addFavoris($bdd, $user, $lat, $lng)
-{
-    $insertFavoris = $bdd->prepare('INSERT INTO favoris(user, lat, lng)VALUES(?, ?, ?)');
-    $insertFavoris->execute(array($user, $lat, $lng));
+    $recupSignalementP = $bdd->prepare('SELECT * FROM signalements WHERE user = ?');
+    $recupSignalementP->execute(array($_SESSION['id']));
 }
 
 ?>
@@ -31,8 +18,8 @@ function addFavoris($bdd, $user, $lat, $lng)
 <head>
     <meta charset="utf-8">
     <title>Leaflet</title>
-    <link rel="stylesheet" href="accueil.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="pageSignalement.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <link rel="stylesheet" href="dist/MarkerCluster.css">
     <link rel="stylesheet" href="dist/MarkerCluster.Default.css">
@@ -42,81 +29,126 @@ function addFavoris($bdd, $user, $lat, $lng)
 </head>
 
 <body>
+    <header>
+        <div id="left-container">
+            <i class="fa-solid fa-bars fa-2xl hamb-menu"></i>
+            <a href="index.php"><img id="logo" src="assets/logo.png"></a>
+            <div class="rubriques">
 
-    <div id="content">
-        <header>
-            <div id="left-container">
-                <i class="fa-solid fa-bars fa-2xl hamb-menu"></i>
-                <a href="index.php"><img id="logo" src="assets/logo.png"></a>
-                <div class="rubriques">
-
-                    <a class="link" href="index.php">Accueil</a>
-                    <a class="link" href="#">Découvrir</a>
-                    <?php
-                    if (isset($_SESSION['mdp'])) {
-                    ?>
-                        <a class="link" href="pageFavoris.php">Favoris</a>
-                    <?php
-
-                    } else {
-                    ?>
-                        <a class="link" href="ident.php">Favoris</a>
-                    <?php
-                    }
-                    ?>
-
-                    <?php
-                    if (isset($_SESSION['mdp'])) {
-                    ?>
-                        <a class="link" href="#">Signalements</a>
-                    <?php
-
-                    } else {
-                    ?>
-                        <a class="link" href="ident.php">Signalements</a>
-                    <?php
-                    }
-                    ?>
-                    <a class="link" href="contact.php">Contact</a>
-                </div>
-            </div>
-
-            <div style="display : flex; align-items : center;">
-                <div class="icon">
-                    <i class="co fa-solid fa-user fa-xl"></i>
-                    <?php
-                    if (isset($_SESSION['mdp'])) {
-                    ?>
-                        <a><?= $_SESSION['pseudo'] ?></a>
-                    <?php
-
-
-                    } else {
-                    ?>
-                        <a>S'identifier</a>
-                    <?php
-                    }
-                    ?>
-                </div>
+                <a class="link" href="index.php">Accueil</a>
+                <a class="link" href="decouvrir.php">Découvrir</a>
                 <?php
                 if (isset($_SESSION['mdp'])) {
                 ?>
-                    <a style="font-size : 1em; width: auto;" class="link" href="deconnexion.php">Déconnexion</a>
+                    <a class="link" href="pageFavoris.php">Favoris</a>
+                <?php
+
+                } else {
+                ?>
+                    <a class="link" href="ident.php">Favoris</a>
+                <?php
+                }
+                ?>
+
+                <?php
+                if (isset($_SESSION['mdp'])) {
+                ?>
+                    <a class="link" href="#">Signalements</a>
+                <?php
+
+                } else {
+                ?>
+                    <a class="link" href="ident.php">Signalements</a>
+                <?php
+                }
+                ?>
+                <a class="link" href="contact.php">Contact</a>
+            </div>
+        </div>
+
+        <div style="display : flex; align-items : center;">
+            <div class="icon">
+                <i class="co fa-solid fa-user fa-xl"></i>
+                <?php
+                if (isset($_SESSION['mdp'])) {
+                ?>
+                    <a><?= $_SESSION['pseudo'] ?></a>
+                <?php
+
+
+                } else {
+                ?>
+                    <a>S'identifier</a>
                 <?php
                 }
                 ?>
             </div>
+            <?php
+            if (isset($_SESSION['mdp'])) {
+            ?>
+                <a style="font-size : 1em; width: auto;" class="link" href="deconnexion.php">Déconnexion</a>
+            <?php
+            }
+            ?>
+        </div>
+    </header>
 
-
-
-        </header>
+    <H1>VOS SIGNALEMENTS</H1>
+    <div class="signalement-list">
         <?php
+        while ($fetch = $recupSignalementP->fetch()) {
         ?>
-        <H2><?= $_SESSION['pseudo'] ?></h2>
+
+            <div class="signalement-list-item">
+                <div class="signalement-list-item-left">
+                    <div class="signalement-list-item-description">
+                        <p class="signalement-list-item-description-text">Voie</p>
+                        <td><?php echo str_replace("_", " ", $fetch['voie']) ?></td>
+                    </div>
+                    <div class="signalement-list-item-description">
+                        <p class="signalement-list-item-description-text">Type</p>
+                        <td><?php echo str_replace("_", " ", $fetch['type_fontaine']) ?></td>
+                    </div>
+                    <div class="signalement-list-item-description">
+                        <p class="signalement-list-item-description-text">Latitude</p>
+                        <td><?php echo $fetch['lat'] ?></td>
+                    </div>
+                    <div class="signalement-list-item-description">
+                        <p class="signalement-list-item-description-text">Longitude</p>
+                        <td><?php echo $fetch['lng'] ?></td>
+                    </div>
+                </div>
+                <p class="delete-btn" onclick="handleDelete(<?php echo $fetch['lat']; ?>, <?php echo $fetch['lng']; ?>)">Annuler le signalement</p>
+            </div>
+
         <?php
+        }
         ?>
-        <H1>VOS SIGNALEMENTS</H1>
-        <script src="header.js"></script>
+    </div>
+
+    <script src="header.js"></script>
+    <script>
+        function handleDelete(lat, lng) {
+            console.log(lat, lng);
+            $.ajax({
+                type: 'POST',
+                url: 'signalements.php',
+                data: {
+                    'lat': lat,
+                    'lng': lng,
+                    'enregistré': true
+                },
+                success: function(res) {
+                    console.log(res);
+                },
+
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+            document.location.reload();
+        }
+    </script>
 </body>
 
 </html>

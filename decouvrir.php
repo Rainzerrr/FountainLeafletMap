@@ -3,21 +3,18 @@
 session_start();
 
 ?>
-
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Page de contact</title>
-    <meta charset="utf-8">
+    <title>Découvrir</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" type="text/css" href="contact.css">
+    <link rel="stylesheet" type="text/css" href="decouvrir.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 
 <body>
-
     <header>
         <div id="left-container">
             <i class="fa-solid fa-bars fa-2xl hamb-menu"></i>
@@ -51,7 +48,7 @@ session_start();
                 <?php
                 }
                 ?>
-                <a class="link" href="#">Contact</a>
+                <a class="link" href="contact.php">Contact</a>
             </div>
         </div>
 
@@ -84,38 +81,38 @@ session_start();
 
 
     </header>
-    <div class="form-container">
-
-        <form method="post">
-            <h3>Formulaire de contact</h3>
-            <div class="formdiv">
-                <label for="prenom">Prénom</label>
-                <input type="text" class="formtxt" id="prenom" name="prenom" placeholder="Entrez votre prénom..." required>
-            </div>
-            <div class="formdiv">
-                <label for="nom">Nom</label>
-                <input type="text" class="formtxt" id="nom" name="nom" placeholder="Entrez votre nom..." required>
-            </div>
-            <div class="formdiv">
-                <label for="email">Email</label>
-                <input type="email" class="formtxt" id="email" name="email" placeholder="Entrez votre email..." required>
-            </div>
-            <div class="formdiv">
-                <label for="message">Message</label>
-                <textarea class="formtxt" id="message" name="message" rows="5" placeholder="Entrez votre message ici..." required></textarea>
-            </div>
-            <button type="submit" class="btn">Envoyer</button>
-        </form>
+    <div id="bg-img">
     </div>
-    <div class="direct-contact-container">
-        <ul class="contact-list">
-            <li class="list-item"><i class="fa fa-map-marker fa-2x"><span class="contact-text place">Paris, France</span></i></li>
 
-            <li class="list-item"><i class="fa fa-phone fa-2x"><span class="contact-text phone"><a href="tel:1-212-555-5555" title="Give me a call">0769508858</a></span></i></li>
+    <h3>L’eau accessible à tout le monde</h3>
+    <div class="text">
 
-            <li class="list-item"><i class="fa fa-envelope fa-2x"><span class="contact-text gmail"><a href="mailto:#" title="Send me an email">1306638404h@gmail.com</a></span></i></li>
+        <p>Crée en 2023, le site Eau de Paris est un service qui permet de <br>
+            recenser toutes les fontaines à boire d’Ile de France. L’objectif de ce<br>
+            service est de permettre aux plus grands nombres de personnes <br>
+            d’avoir accès gratuitement à de l’eau potable, par le biais d’une carte <br>
+            interactive qui regroupe l’ensemble de ces fontaines publiques.
+        </p>
+        <p>Eau de Paris en chiffres : <br>
+            <strong>1052 fontaines </strong>à Paris et en Ile-de-France <br>
+            <strong>483 000 m³</strong> d'eau potable distribué chaque jour <br>
+            <strong>120 litres d’eau</strong> consommé en moyenne par personne <br>
+            <strong>3 millions d’usagers </strong> <br>
+        </p>
+    </div>
+    <div class="secondepart">
+        <h3>Découvrez les différentes fontaines d’Ile de France !</h3>
+        <img id="img-bg" src="assets/bg.jpg">
+        <div class="fontaine">
 
-        </ul>
+
+            <p>La fontaine de Wallace, une fontaine en fonte de fer modéliser à la fin du 19ème siècle par Charles-Auguste Lebourg.</p>
+            <p>La fontaine Arceau, du style moderne et épuré permet à une personne de boire debout sans risque d’éclaboussures.</p>
+            <p>La fontaine du millénaire représentant deux silhouettes accolées dos à dos, telles des Vénus contemporaines.</p>
+            <p>La fontaine à l’Albien d’une structure tubulaire métallique. Elles sont alimentées par des puits artésiens.</p>
+            <p>La fontaine pétillante, comme son nom l’indique, distribue de l’eau pétillante.</p>
+
+        </div>
     </div>
 
     <script src="header.js"></script>

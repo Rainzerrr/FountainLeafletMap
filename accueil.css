@@ -107,3 +107,19 @@ p {
     opacity: 0.7;
     transition: all 0.3s;
 }
+
+/* Style des boutons du popup */
+
+.userBtn {
+    padding: 5px;
+    border: none;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.userBtnContainer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}

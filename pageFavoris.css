@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+H1 {
+    text-align: center;
+    margin: 70px 0;
+}
+
+.favoris-list {
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+    border: 1px solid rgb(230, 230, 230);
+    margin: 0 auto;
+    border-radius: 20px;
+}
+
+.favoris-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(230, 230, 230);
+}
+
+.favoris-list-item-left {
+    display: flex;
+    gap: 50px;
+    margin-left: 5%;
+}
+
+.favoris-list-item-description {
+    padding: 25px;
+}
+
+.delete-btn {
+    border: 1px solid rgba(17, 119, 56, 0.596);
+    border-radius: 8px;
+    padding: 15px;
+    margin-right: 10%;
+    margin-left: 50px;
+    cursor: pointer;
+    background-color: rgb(92, 211, 155);
+}
+
+.delete-btn:hover {
+    background-color: rgb(81, 184, 136);
+    color: white;
+    transition: all 0.5s;
+}
+
+@media screen and (max-width : 1490px) {
+    .favoris-list-item {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .favoris-list-item-left {
+        gap: 20px;
+    }
+
+    .delete-btn {
+        margin-right: 0;
+        margin-left: 0;
+    }
+}
+
+@media screen and (max-width : 1150px) {
+    .favoris-list-item-left {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .favoris-list-item {
+        width: 300px;
+        height: 584px;
+        border: 1px solid rgb(230, 230, 230);
+        border-radius: 20px;
+        margin-bottom: 50px;
+    }
+
+    .favoris-list {
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        gap: 10px;
+        border: none;
+        margin: 0 20px;
+    }
+
+
+}

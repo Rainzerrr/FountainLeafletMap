@@ -4,23 +4,11 @@ session_start();
 
 $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root', '');
 
-if (isset($_SESSION['mdp']) and isset($_POST['lat'])) {
-    $lat = $_POST['lat'];
-    $lng = $_POST['lng'];
-    addFavoris($bdd, $_SESSION['id'], $lat, $lng);
-    header("Location : index.php");
-}
+
 
 if (isset($_SESSION['mdp'])) {
-    $recupFavoris = $bdd->prepare('SELECT * FROM favoris WHERE user = ?');
-    $recupFavoris->execute(array($_SESSION['id']));
-    $favoris = $recupFavoris->fetchAll();
-}
-
-function addFavoris($bdd, $user, $lat, $lng)
-{
-    $insertFavoris = $bdd->prepare('INSERT INTO favoris(user, lat, lng)VALUES(?, ?, ?)');
-    $insertFavoris->execute(array($user, $lat, $lng));
+    $recupFavorisP = $bdd->prepare('SELECT * FROM favoris WHERE user = ?');
+    $recupFavorisP->execute(array($_SESSION['id']));
 }
 
 ?>
@@ -31,8 +19,8 @@ function addFavoris($bdd, $user, $lat, $lng)
 <head>
     <meta charset="utf-8">
     <title>Leaflet</title>
-    <link rel="stylesheet" href="accueil.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="pageFavoris.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <link rel="stylesheet" href="dist/MarkerCluster.css">
     <link rel="stylesheet" href="dist/MarkerCluster.Default.css">
@@ -51,7 +39,7 @@ function addFavoris($bdd, $user, $lat, $lng)
                 <div class="rubriques">
 
                     <a class="link" href="index.php">Accueil</a>
-                    <a class="link" href="#">Découvrir</a>
+                    <a class="link" href="decouvrir.php">Découvrir</a>
                     <?php
                     if (isset($_SESSION['mdp'])) {
                     ?>
@@ -68,7 +56,7 @@ function addFavoris($bdd, $user, $lat, $lng)
                     <?php
                     if (isset($_SESSION['mdp'])) {
                     ?>
-                        <a class="link" href="pageSignalement">Signalements</a>
+                        <a class="link" href="pageSignalement.php">Signalements</a>
                     <?php
 
                     } else {
@@ -110,14 +98,62 @@ function addFavoris($bdd, $user, $lat, $lng)
 
 
         </header>
-        <?php
-        ?>
-        <H2><?= $_SESSION['pseudo'] ?></h2>
-        <?php
-        ?>
-        <H1>VOS FAVORIS</H1>
 
+        <H1>VOS FAVORIS</H1>
+        <div class="favoris-list">
+            <?php
+            while ($fetch = $recupFavorisP->fetch()) {
+            ?>
+
+                <div class="favoris-list-item">
+                    <div class="favoris-list-item-left">
+                        <div class="favoris-list-item-description">
+                            <p class="favoris-list-item-description-text">Voie</p>
+                            <td><?php echo str_replace("_", " ", $fetch['voie']) ?></td>
+                        </div>
+                        <div class="favoris-list-item-description">
+                            <p class="favoris-list-item-description-text">Type</p>
+                            <td><?php echo str_replace("_", " ", $fetch['type_fontaine']) ?></td>
+                        </div>
+                        <div class="favoris-list-item-description">
+                            <p class="favoris-list-item-description-text">Latitude</p>
+                            <td><?php echo $fetch['lat'] ?></td>
+                        </div>
+                        <div class="favoris-list-item-description">
+                            <p class="favoris-list-item-description-text">Longitude</p>
+                            <td><?php echo $fetch['lng'] ?></td>
+                        </div>
+                    </div>
+                    <p class="delete-btn" onclick="handleDelete(<?php echo $fetch['lat']; ?>, <?php echo $fetch['lng']; ?>)">Supprimer des favoris</p>
+                </div>
+
+            <?php
+            }
+            ?>
+        </div>
         <script src="header.js"></script>
+        <script>
+            function handleDelete(lat, lng) {
+                console.log(lat, lng);
+                $.ajax({
+                    type: 'POST',
+                    url: 'favoris.php',
+                    data: {
+                        'lat': lat,
+                        'lng': lng,
+                        'enregistré': true
+                    },
+                    success: function(res) {
+                        console.log(res);
+                    },
+
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+                document.location.reload();
+            }
+        </script>
 
 </body>
 

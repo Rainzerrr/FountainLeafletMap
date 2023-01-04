@@ -128,8 +128,8 @@ if (isset($_POST['submit_connexion'])) {
         <div class="container">
             <form method="post">
                 <p class="form-title">Inscription</p>
-                <input type="text" name="pseudo_inscription" placeholder="Nom d'utilisateur" required><br>
-                <input type="password" name="mdp_inscription" placeholder="Mot de passe" required><br>
+                <div><img class="imglogin" src="assets/user.png"><input type="text" name="pseudo_inscription" placeholder="Nom d'utilisateur" required><br></div>
+                <div><img class="imglogin" src="assets/mdp.png"><input type="password" name="mdp_inscription" placeholder="Mot de passe" required><br></div>
                 <input type="submit" name="submit_inscription" value="S'inscrire">
             </form>
         </div>
@@ -138,8 +138,9 @@ if (isset($_POST['submit_connexion'])) {
 
             <form method="post">
                 <p class="form-title">Connexion</p>
-                <input type="text" name="pseudo_connexion" placeholder="Nom d'utilisateur" required><br>
-                <input type="password" name="mdp_connexion" placeholder="Mot de passe" required><br>
+                <div><img class="imglogin" src="assets/user.png"><input type="text" name="pseudo_connexion" placeholder="Nom d'utilisateur" required><br></div>
+
+                <div><img class="imglogin" src="assets/mdp.png"><input type="password" name="mdp_connexion" placeholder="Mot de passe" required><br></div>
                 <input type="submit" name="submit_connexion" value="Connexion">
                 <?php
                 ?>
