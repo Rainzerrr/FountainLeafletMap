@@ -3,7 +3,7 @@
 
 body {
     height: 100vh;
-    background-color: #dcffe2;
+    background-color : #eefbdf;
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -41,7 +41,7 @@ form {
     font-size: 1.4rem;
     margin-bottom: 60px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
-    background-color: rgb(92, 211, 155);
+    background-color: #ABD699;
     margin-bottom: 40px;
 }
 
@@ -73,11 +73,11 @@ input[type="submit"] {
     font-size: 1rem;
     margin-bottom: 0px;
     cursor: pointer;
-    background-color: rgb(92, 211, 155);
+    background-color: #ABD699;
 }
 
 input[type="submit"]:hover {
-    background-color: rgb(81, 184, 136);
+    background-color: #91cb79;
 }
 
 ::placeholder {

@@ -3,7 +3,7 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: rgb(92, 211, 155);
+    background-color: #ABD699;
 }
 
 h3 {
@@ -22,7 +22,7 @@ form {
     height: fit-content;
     margin: 0 auto;
     border-radius: 5px;
-    background-color: #dcffe2;
+    background-color: #eefbdf;
     padding: 20px;
 }
 
@@ -34,12 +34,13 @@ label {
 
 input[type="text"],
 textarea {
-    font-size: 16px;
+    font-size: 1em;
     padding: 10px;
     border: 1px solid #cccccc;
     border-radius: 4px;
     margin-bottom: 20px;
     resize: none;
+    font-family : 'Montserrat, sans serif';
 }
 
 input:hover,
@@ -59,7 +60,7 @@ input[type="submit"] {
 .form-container {
     display: flex;
     padding-top: 60px;
-    background-color: #dcffe2;
+    background-color: #eefbdf;
 }
 
 .formtxt {
@@ -73,16 +74,19 @@ input[type="submit"] {
 }
 
 .btn {
-    background-color: rgb(92, 211, 155);
+    background-color: #ABD699;
     color: black;
     padding: 12px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-bottom : 70px;
+    font-size : 1em;
+    font-family : 'Montserrat, sans serif';
 }
 
 .btn:hover {
-    background-color: rgb(81, 184, 136);
+    background-color: #91cb79;
     transition: all 0.5s;
 }
 
@@ -145,7 +149,4 @@ input[type="submit"] {
         margin-bottom: 10px;
     }
 
-    .btn {
-        margin-bottom: 40px;
-    }
 }

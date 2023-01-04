@@ -19,8 +19,8 @@ if (isset($_SESSION['mdp'])) {
 <head>
     <meta charset="utf-8">
     <title>Leaflet</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="pageFavoris.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/pageFavoris.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <link rel="stylesheet" href="dist/MarkerCluster.css">
     <link rel="stylesheet" href="dist/MarkerCluster.Default.css">

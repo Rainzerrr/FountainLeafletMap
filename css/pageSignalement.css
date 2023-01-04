@@ -3,6 +3,7 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
+    background-color : #eefbdf;
 }
 
 H1 {
@@ -13,17 +14,18 @@ H1 {
 .signalement-list {
     display: flex;
     flex-direction: column;
-    min-height: 500px;
-    border: 1px solid rgb(230, 230, 230);
+    min-height: 405px;
+    border: 1px solid #ABD699;
     margin: 0 auto;
     border-radius: 20px;
+    min-width : 70%;
 }
 
 .signalement-list-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgb(230, 230, 230);
+    border-bottom: 1px solid #ABD699;
 }
 
 .signalement-list-item-left {
@@ -43,11 +45,11 @@ H1 {
     margin-right: 10%;
     margin-left: 50px;
     cursor: pointer;
-    background-color: rgb(92, 211, 155);
+    background-color: #ABD699;
 }
 
 .delete-btn:hover {
-    background-color: rgb(81, 184, 136);
+    background-color: #91cb79;
     color: white;
     transition: all 0.5s;
 }
@@ -78,7 +80,7 @@ H1 {
     .signalement-list-item {
         width: 300px;
         height: 584px;
-        border: 1px solid rgb(230, 230, 230);
+        border: 1px solid #ABD699;
         border-radius: 20px;
         margin-bottom: 50px;
     }

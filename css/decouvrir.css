@@ -3,14 +3,14 @@
 
 body {
     display: block;
-    background-color: #dcffe2;
+    background-color: #eefbdf;
     font-family: 'Montserrat', sans-serif;
 }
 
 #bg-img {
     height: 485px;
     background-repeat: no-repeat;
-    background-image: url("assets/web.png");
+    background-image: url("../assets/web.png");
 }
 
 h3 {

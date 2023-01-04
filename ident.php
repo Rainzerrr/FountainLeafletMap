@@ -52,8 +52,8 @@ if (isset($_POST['submit_connexion'])) {
 <head>
     <meta charset="utf-8">
     <title>Titre de la page</title>
-    <link rel="stylesheet" href="ident.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/ident.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
@@ -62,11 +62,11 @@ if (isset($_POST['submit_connexion'])) {
     <header>
         <div id="left-container">
             <i class="fa-solid fa-bars fa-2xl hamb-menu"></i>
-            <a href="#"><img id="logo" src="assets/logo.png"></a>
+            <a href="index.php"><img id="logo" src="assets/logo.png"></a>
             <div class="rubriques">
 
                 <a class="link" href="index.php">Accueil</a>
-                <a class="link" href="#">Découvrir</a>
+                <a class="link" href="decouvrir.php">Découvrir</a>
                 <?php
                 if (isset($_SESSION['mdp'])) {
                 ?>
@@ -83,7 +83,7 @@ if (isset($_POST['submit_connexion'])) {
                 <?php
                 if (isset($_SESSION['mdp'])) {
                 ?>
-                    <a class="link" href="#">Signalements</a>
+                    <a class="link" href="pageSignalement.php">Signalements</a>
                 <?php
 
                 } else {

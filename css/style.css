@@ -20,7 +20,7 @@ body {
 header {
     font-family: 'Montserrat', sans-serif;
     height: 100px;
-    background-color: rgb(92, 211, 155);
+    background-color: #ABD699;
     z-index: 999;
     display: flex;
     justify-content: space-between;
@@ -63,7 +63,7 @@ header {
 }
 
 .link:hover {
-    background-color: rgb(81, 184, 136);
+    background-color: #91cb79;
     color: white;
     transition: all 0.4s;
 }
@@ -81,7 +81,7 @@ header {
 }
 
 .icon:hover {
-    background-color: rgb(81, 184, 136);
+    background-color: #91cb79;
     color: white;
     transition: all 0.4s;
 }
@@ -120,8 +120,8 @@ les espaces sur les côtés du menu */
         padding: 10px 0;
         justify-content: center;
         z-index: 999;
-        background-color: rgb(92, 211, 155);
-        border: 2px solid rgb(78, 168, 119);
+        background-color: #ABD699;
+        border: 2px solid #608650;
         border-top-right-radius: 10px;
     }
 
