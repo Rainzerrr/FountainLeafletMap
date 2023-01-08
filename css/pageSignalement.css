@@ -3,7 +3,7 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color : #eefbdf;
+    background-color: #eefbdf;
 }
 
 H1 {
@@ -11,30 +11,30 @@ H1 {
     margin: 70px 0;
 }
 
-.signalement-list {
+.signalmement-list {
     display: flex;
     flex-direction: column;
-    min-height: 405px;
-    border: 1px solid #ABD699;
+    min-height: 420px;
+    border: 1px solid #b8e7a4;
     margin: 0 auto;
     border-radius: 20px;
-    min-width : 70%;
+    min-width: 70%;
 }
 
-.signalement-list-item {
+.signalmement-list-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #ABD699;
 }
 
-.signalement-list-item-left {
+.signalmement-list-item-left {
     display: flex;
     gap: 50px;
     margin-left: 5%;
 }
 
-.signalement-list-item-description {
+.signalmement-list-item-description {
     padding: 25px;
 }
 
@@ -46,6 +46,7 @@ H1 {
     margin-left: 50px;
     cursor: pointer;
     background-color: #ABD699;
+    text-align: center;
 }
 
 .delete-btn:hover {
@@ -55,13 +56,13 @@ H1 {
 }
 
 @media screen and (max-width : 1490px) {
-    .signalement-list-item {
+    .signalmement-list-item {
         flex-direction: column;
         align-items: center;
         justify-content: center;
     }
 
-    .signalement-list-item-left {
+    .signalmement-list-item-left {
         gap: 20px;
     }
 
@@ -72,12 +73,12 @@ H1 {
 }
 
 @media screen and (max-width : 1150px) {
-    .signalement-list-item-left {
+    .signalmement-list-item-left {
         flex-direction: column;
         gap: 0;
     }
 
-    .signalement-list-item {
+    .signalmement-list-item {
         width: 300px;
         height: 584px;
         border: 1px solid #ABD699;
@@ -85,7 +86,7 @@ H1 {
         margin-bottom: 50px;
     }
 
-    .signalement-list {
+    .signalmement-list {
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;

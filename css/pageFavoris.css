@@ -3,7 +3,7 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color : #eefbdf;
+    background-color: #eefbdf;
 }
 
 H1 {
@@ -14,11 +14,11 @@ H1 {
 .favoris-list {
     display: flex;
     flex-direction: column;
-    min-height: 405px;
+    min-height: 420px;
     border: 1px solid #b8e7a4;
     margin: 0 auto;
     border-radius: 20px;
-    min-width : 70%;
+    min-width: 70%;
 }
 
 .favoris-list-item {
@@ -46,6 +46,7 @@ H1 {
     margin-left: 50px;
     cursor: pointer;
     background-color: #ABD699;
+    text-align: center;
 }
 
 .delete-btn:hover {

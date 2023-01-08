@@ -18,8 +18,6 @@ if (isset($_POST['submit_inscription'])) {
             $_SESSION['id'] = $recupUserInscription->fetch()['id'];
             header('Location: index.php');
         }
-
-        echo $_SESSION['id'];
     }
 }
 
@@ -35,7 +33,6 @@ if (isset($_POST['submit_connexion'])) {
             $_SESSION['pseudo'] = $pseudoConnexion;
             $_SESSION['mdp'] = $mdpConnexion;
             $_SESSION['id'] = $recupUserConnexion->fetch()['id'];
-            echo $_SESSION['id'];
             header('Location: index.php');
             $errorMsg = "";
         } else {

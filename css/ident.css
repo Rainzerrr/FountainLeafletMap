@@ -3,7 +3,7 @@
 
 body {
     height: 100vh;
-    background-color : #eefbdf;
+    background-color: #eefbdf;
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -22,7 +22,7 @@ form {
     display: flex;
     flex-direction: column;
     background: white;
-    height: 350px;
+    height: 365px;
     border: 1px solid black;
     align-items: center;
     padding: 0px 30px 0px 30px;

@@ -292,11 +292,7 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
         // affiche toutes les fontaines signalées par l'utilisateur
 
         $signaler.click(async function() {
-            
-            <?php
-            if (isset($_SESSION['mdp'])) {
-            ?>
-                map.remove();
+            map.remove();
             map = L.map('map', {
                 center: [48.861477, 2.343219],
                 zoom: 13,
@@ -310,38 +306,46 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
             await fetch("https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=&rows=10000&facet=type_objet&facet=modele&facet=commune&facet=dispo")
                 .then(reponse => reponse.json())
                 .then(reponse2 => data = reponse2);
-                let dispoFilter;
-                filters[1].length === 1 ? dispoFilter = filters[1][0] : dispoFilter = "ALL";
-                mkGroupCluster = new L.MarkerClusterGroup({
+            let dispoFilter;
+            filters[1].length === 1 ? dispoFilter = filters[1][0] : dispoFilter = "ALL";
+            mkGroupCluster = new L.MarkerClusterGroup({
                 disableClusteringAtZoom: 15
             });
-            
-            for (let i = 0; i < data.records.length; i++){
-                if (dataSignalementX.includes(data.records[i].fields.geo_point_2d[0])){
+
+            for (let i = 0; i < data.records.length; i++) {
+                if (dataSignalementX.includes(data.records[i].fields.geo_point_2d[0])) {
                     let mk;
-                    var dispo=false;
+                    var dispo = false;
                     var lat = data.records[i].fields.geo_point_2d[0]
                     var lng = data.records[i].fields.geo_point_2d[1]
                     if (data.records[i].fields.dispo === "OUI") {
-                        if (dataFavX.includes(lat) && dataFavY.includes(lng)){
-                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon : signalFavorisFontaine});
+                        if (dataFavX.includes(lat) && dataFavY.includes(lng)) {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: signalFavorisFontaine
+                            });
                         } else {
-                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon : signalFontaine});
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: signalFontaine
+                            });
                         }
                     } else {
-                        if (dataFavX.includes(lat) && dataFavY.includes(lng)){
-                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon : signalFavorisNoFontaine});
+                        if (dataFavX.includes(lat) && dataFavY.includes(lng)) {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: signalFavorisNoFontaine
+                            });
                         } else {
-                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon : signalNoFontaine});
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: signalNoFontaine
+                            });
                         }
                     }
 
                     if (data.records[i].fields.commune.includes("PARIS")) {
-                        var text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet + "<br/> Dispo : " + data.records[i].fields.dispo;
+                        var text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet.replaceAll("_", " ").replace("FONTNE", "FONTAINE") + "<br/> Dispo : " + data.records[i].fields.dispo;
                         var bgFavoris = "";
                         var bgSignalé = "";
                         var voie = String(data.records[i].fields.voie).replaceAll(" ", "_");
-                        var typeF = data.records[i].fields.type_objet
+                        var typeF = data.records[i].fields.type_objet.replace("FONTNE", "FONTAINE");
                         var lat = data.records[i].fields.geo_point_2d[0]
                         var lng = data.records[i].fields.geo_point_2d[1]
 
@@ -354,89 +358,90 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
                 }
             }
             map.addLayer(mkGroupCluster);
-            <?php
-            } else {
-            ?>
-                document.location="ident.php"
-            <?php
-            }
-            ?>
-            
+
         })
 
         // Affichage des fontaine favorites si connecté, sinn redirection vers la page d'identification
 
         $favoris.click(async function() {
-            
+
             <?php
             if (isset($_SESSION['mdp'])) {
             ?>
                 map.remove();
-            map = L.map('map', {
-                center: [48.861477, 2.343219],
-                zoom: 13,
-                layers: [OpenStreetMap_HOT],
-                zoomControl: false
-            });
+                map = L.map('map', {
+                    center: [48.861477, 2.343219],
+                    zoom: 13,
+                    layers: [OpenStreetMap_HOT],
+                    zoomControl: false
+                });
 
-            L.control.zoom({
-                position: 'bottomright'
-            }).addTo(map);
-            await fetch("https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=&rows=10000&facet=type_objet&facet=modele&facet=commune&facet=dispo")
-                .then(reponse => reponse.json())
-                .then(reponse2 => data = reponse2);
+                L.control.zoom({
+                    position: 'bottomright'
+                }).addTo(map);
+                await fetch("https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=&rows=10000&facet=type_objet&facet=modele&facet=commune&facet=dispo")
+                    .then(reponse => reponse.json())
+                    .then(reponse2 => data = reponse2);
                 let dispoFilter;
                 filters[1].length === 1 ? dispoFilter = filters[1][0] : dispoFilter = "ALL";
                 mkGroupCluster = new L.MarkerClusterGroup({
-                disableClusteringAtZoom: 15
-            });
-            
-            for (let i = 0; i < data.records.length; i++){
-                if (dataFavX.includes(data.records[i].fields.geo_point_2d[0])){
-                    let mk;
-                    var dispo=false;
-                    var lat = data.records[i].fields.geo_point_2d[0]
-                    var lng = data.records[i].fields.geo_point_2d[1]
-                    if (data.records[i].fields.dispo === "OUI") {
-                        if (dataSignalementX.includes(lat) && dataSignalementY.includes(lng)){
-                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon : signalFavorisFontaine});
-                        } else {
-                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon : favorisFontaine});
-                        }
-                    } else {
-                        if (dataSignalementX.includes(lat) && dataSignalementY.includes(lng)){
-                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon : signalFavorisNoFontaine});
-                        } else {
-                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], { icon : favorisNoFontaine});
-                        }
-                    }
+                    disableClusteringAtZoom: 15
+                });
 
-                    if (data.records[i].fields.commune.includes("PARIS")) {
-                        var text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet + "<br/> Dispo : " + data.records[i].fields.dispo;
-                        var bgFavoris = "";
-                        var bgSignalé = "";
-                        var voie = String(data.records[i].fields.voie).replaceAll(" ", "_");
-                        var typeF = data.records[i].fields.type_objet
+                for (let i = 0; i < data.records.length; i++) {
+                    if (dataFavX.includes(data.records[i].fields.geo_point_2d[0])) {
+                        let mk;
+                        var dispo = false;
                         var lat = data.records[i].fields.geo_point_2d[0]
                         var lng = data.records[i].fields.geo_point_2d[1]
+                        if (data.records[i].fields.dispo === "OUI") {
+                            if (dataSignalementX.includes(lat) && dataSignalementY.includes(lng)) {
+                                mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                    icon: signalFavorisFontaine
+                                });
+                            } else {
+                                mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                    icon: favorisFontaine
+                                });
+                            }
+                        } else {
+                            if (dataSignalementX.includes(lat) && dataSignalementY.includes(lng)) {
+                                mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                    icon: signalFavorisNoFontaine
+                                });
+                            } else {
+                                mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                    icon: favorisNoFontaine
+                                });
+                            }
+                        }
 
-                        if (dataFavX.includes(lat) && dataFavY.includes(lng)) bgFavoris = "rgba(242, 225, 42, 0.8);";
-                        if (dataSignalementUserX.includes(lat) && dataSignalementUserY.includes(lng)) bgSignalé = "rgb(241, 138, 138);";
-                        mk.bindPopup(text + "<br/><br/>" + '<div class ="userBtnContainer">' + `<button onclick=handleFavoris("${voie}","${typeF}",${lat},${lng}) class = "userBtn" style="background-color:${bgFavoris}">Favoris</button>` +
-                            `<button classname = "signaler" onclick=handleSignaler("${voie}","${typeF}",${lat},${lng}) class = "userBtn userBtnRight" style="background-color:${bgSignalé}">Signaler</button>` + '</div>');
+                        if (data.records[i].fields.commune.includes("PARIS")) {
+                            var text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet.replaceAll("_", " ").replace("FONTNE", "FONTAINE") + "<br/> Dispo : " + data.records[i].fields.dispo;
+                            var bgFavoris = "";
+                            var bgSignalé = "";
+                            var voie = String(data.records[i].fields.voie).replaceAll(" ", "_");
+                            var typeF = data.records[i].fields.type_objet.replace("FONTNE", "FONTAINE");
+                            var lat = data.records[i].fields.geo_point_2d[0]
+                            var lng = data.records[i].fields.geo_point_2d[1]
+
+                            if (dataFavX.includes(lat) && dataFavY.includes(lng)) bgFavoris = "rgba(242, 225, 42, 0.8);";
+                            if (dataSignalementUserX.includes(lat) && dataSignalementUserY.includes(lng)) bgSignalé = "rgb(241, 138, 138);";
+                            mk.bindPopup(text + "<br/><br/>" + '<div class ="userBtnContainer">' + `<button onclick=handleFavoris("${voie}","${typeF}",${lat},${lng}) class = "userBtn" style="background-color:${bgFavoris}">Favoris</button>` +
+                                `<button classname = "signaler" onclick=handleSignaler("${voie}","${typeF}",${lat},${lng}) class = "userBtn userBtnRight" style="background-color:${bgSignalé}">Signaler</button>` + '</div>');
+                        }
+                        mkGroupCluster.addLayer(mk);
                     }
-                    mkGroupCluster.addLayer(mk);
                 }
-            }
-            map.addLayer(mkGroupCluster);
+                map.addLayer(mkGroupCluster);
             <?php
             } else {
             ?>
-                document.location="ident.php"
+                document.location = "ident.php"
             <?php
             }
             ?>
-            
+
         })
 
         // Affichage de tous les markers de fontaines dans la carte
@@ -453,7 +458,7 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
                 let mk;
                 let signal = false;
                 let favoris = false;
-                let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet + "<br/> Dispo : " + data.records[i].fields.dispo;
+                let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet.replaceAll("_", " ").replace("FONTNE", "FONTAINE") + "<br/> Dispo : " + data.records[i].fields.dispo;
 
                 if (dataSignalementX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataSignalementY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
                     dataSignalementX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
@@ -519,7 +524,7 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
                     var bgFavoris = "";
                     var bgSignalé = "";
                     var voie = String(data.records[i].fields.voie).replaceAll(" ", "_");
-                    var typeF = data.records[i].fields.type_objet
+                    var typeF = data.records[i].fields.type_objet.replace("FONTNE", "FONTAINE");
                     var lat = data.records[i].fields.geo_point_2d[0]
                     var lng = data.records[i].fields.geo_point_2d[1]
 
@@ -581,13 +586,12 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
 
         function handleSignaler(voie, type, lat, lng) {
 
-
             <?php
             if (isset($_SESSION['mdp'])) {
             ?>
                 var enregistré;
 
-                if (dataSignalementX.includes(lat) && dataSignalementY.includes(lng)) {
+                if (dataSignalementUserX.includes(lat) && dataSignalementUserY.includes(lng)) {
                     enregistré = true;
                 } else {
                     enregistré = false;
@@ -659,16 +663,21 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
 
         $reinit.click(async function() {
             map.remove();
-                map = L.map('map', {
-                    center: [48.861477, 2.343219],
-                    zoom: 13,
-                    layers: [OpenStreetMap_HOT],
-                    zoomControl: false
-                });
+            map = L.map('map', {
+                center: [48.861477, 2.343219],
+                zoom: 13,
+                layers: [OpenStreetMap_HOT],
+                zoomControl: false
+            });
 
-                L.control.zoom({
-                    position: 'bottomright'
-                }).addTo(map);
+            L.control.zoom({
+                position: 'bottomright'
+            }).addTo(map);
+            filters = [
+                [],
+                []
+            ]
+            $btn.css("background-color", "rgb(230, 230, 230)");
             await init();
         });
 
@@ -682,100 +691,98 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
         // Collecte les données et les affiche en fonction des filtres choisis par l'utilisateur
 
         async function dataCollect() {
-                map.remove();
-                map = L.map('map', {
-                    center: [48.861477, 2.343219],
-                    zoom: 13,
-                    layers: [OpenStreetMap_HOT],
-                    zoomControl: false
-                });
+            map.remove();
+            map = L.map('map', {
+                center: [48.861477, 2.343219],
+                zoom: 13,
+                layers: [OpenStreetMap_HOT],
+                zoomControl: false
+            });
 
-                L.control.zoom({
-                    position: 'bottomright'
-                }).addTo(map);
-                await fetch("https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=&rows=10000&facet=type_objet&facet=modele&facet=commune&facet=dispo")
-                    .then(reponse => reponse.json())
-                    .then(reponse2 => data = reponse2);
-                let dispoFilter;
-                filters[1].length === 1 ? dispoFilter = filters[1][0] : dispoFilter = "ALL";
-                mkGroupCluster = new L.MarkerClusterGroup({
-                    disableClusteringAtZoom: 15
-                });
-                for (let i = 0; i < data.records.length; i++) {
-                    let mk;
-                    let signal = false;
-                    let favoris = false;
-                    let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet + "<br/> Dispo : " + data.records[i].fields.dispo;
+            L.control.zoom({
+                position: 'bottomright'
+            }).addTo(map);
+            await fetch("https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=&rows=10000&facet=type_objet&facet=modele&facet=commune&facet=dispo")
+                .then(reponse => reponse.json())
+                .then(reponse2 => data = reponse2);
+            let dispoFilter;
+            filters[1].length === 1 ? dispoFilter = filters[1][0] : dispoFilter = "ALL";
+            mkGroupCluster = new L.MarkerClusterGroup({
+                disableClusteringAtZoom: 15
+            });
+            for (let i = 0; i < data.records.length; i++) {
+                let mk;
+                let signal = false;
+                let favoris = false;
+                let text = "Voie : " + data.records[i].fields.voie + "<br/> Type : " + data.records[i].fields.type_objet.replaceAll("_", " ").replace("FONTNE", "FONTAINE") + "<br/> Dispo : " + data.records[i].fields.dispo;
 
-                    if (dataSignalementX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataSignalementY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
-                        dataSignalementX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
-                        signal = true;
-                    }
+                if (dataSignalementX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataSignalementY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
+                    dataSignalementX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
+                    signal = true;
+                }
 
-                    if (dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataFavY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
-                        dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
-                        favoris = true;
-                    }
+                if (dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) === dataFavY.indexOf(data.records[i].fields.geo_point_2d[1]) &&
+                    dataFavX.indexOf(data.records[i].fields.geo_point_2d[0]) !== -1) {
+                    favoris = true;
+                }
 
-                    if (signal) {
-                        if (favoris) {
-                            if (data.records[i].fields.dispo === "OUI") {
-                                mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                                    icon: signalFavorisFontaine
-                                });
-                            } else {
-                                mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                                    icon: signalFavorisNoFontaine
-                                });
-                            }
-
+                if (signal) {
+                    if (favoris) {
+                        if (data.records[i].fields.dispo === "OUI") {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: signalFavorisFontaine
+                            });
                         } else {
-                            if (data.records[i].fields.dispo === "OUI") {
-                                mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                                    icon: signalFontaine
-                                });
-                            } else {
-                                mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                                    icon: signalNoFontaine
-                                });
-                            }
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: signalFavorisNoFontaine
+                            });
                         }
+
                     } else {
-                        if (favoris) {
-                            if (data.records[i].fields.dispo === "OUI") {
-                                mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                                    icon: favorisFontaine
-                                });
-                            } else {
-                                mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                                    icon: favorisNoFontaine
-                                });
-                            }
-
+                        if (data.records[i].fields.dispo === "OUI") {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: signalFontaine
+                            });
                         } else {
-                            if (data.records[i].fields.dispo === "OUI") {
-                                mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                                    icon: dispoFontaine
-                                });
-                            } else {
-                                mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
-                                    icon: pasDispoFontaine
-                                });
-                            }
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: signalNoFontaine
+                            });
                         }
                     }
+                } else {
+                    if (favoris) {
+                        if (data.records[i].fields.dispo === "OUI") {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: favorisFontaine
+                            });
+                        } else {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: favorisNoFontaine
+                            });
+                        }
 
-                    if(filters[0].length === 0 && filters[1].length === 0){
-                        await init();
+                    } else {
+                        if (data.records[i].fields.dispo === "OUI") {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: dispoFontaine
+                            });
+                        } else {
+                            mk = L.marker([data.records[i].fields.geo_point_2d[0], data.records[i].fields.geo_point_2d[1]], {
+                                icon: pasDispoFontaine
+                            });
+                        }
                     }
+                }
 
-                else if(filters[0].length === 0 && filters[1].length !== 0){
-                        console.log(data.records[i].fields.dispo !== dispoFilter);
+                if (filters[0].length === 0 && filters[1].length === 0) {
+                    await init();
+                } else if (filters[0].length === 0 && filters[1].length !== 0) {
+                    console.log(data.records[i].fields.dispo !== dispoFilter);
                     if (data.records[i].fields.dispo !== dispoFilter) {
                         var bgFavoris = "";
                         var bgSignalé = "";
                         var voie = String(data.records[i].fields.voie).replaceAll(" ", "_");
-                        var typeF = data.records[i].fields.type_objet
+                        var typeF = data.records[i].fields.type_objet.replace("FONTNE", "FONTAINE");
                         var lat = data.records[i].fields.geo_point_2d[0]
                         var lng = data.records[i].fields.geo_point_2d[1]
 
@@ -785,15 +792,13 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
                             `<button classname = "signaler" onclick=onclick=handleSignaler("${voie}","${typeF}",${lat},${lng}) class = "userBtn userBtnRight" style="background-color:${bgSignalé}">Signaler</button>` + '</div>');
                         mkGroupCluster.addLayer(mk);
                     }
-            }
-
-                else{
+                } else {
                     for (let j = 0; j < filters[0].length; j++) {
                         if (data.records[i].fields.commune.includes(`PARIS ${filters[0][j]}E`) && data.records[i].fields.dispo !== dispoFilter) {
                             var bgFavoris = "";
                             var bgSignalé = "";
                             var voie = String(data.records[i].fields.voie).replaceAll(" ", "_");
-                            var typeF = data.records[i].fields.type_objet
+                            var typeF = data.records[i].fields.type_objet.replace("FONTNE", "FONTAINE");
                             var lat = data.records[i].fields.geo_point_2d[0]
                             var lng = data.records[i].fields.geo_point_2d[1]
 
@@ -806,10 +811,9 @@ $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;', 'root
                     }
                 }
             }
-                map.addLayer(mkGroupCluster);
+            map.addLayer(mkGroupCluster);
 
         }
-
     </script>
 </body>
 
