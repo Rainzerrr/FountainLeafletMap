@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : dim. 08 jan. 2023 à 22:12
+-- Généré le : dim. 08 jan. 2023 à 22:45
 -- Version du serveur : 5.7.40
 -- Version de PHP : 8.0.26
 
@@ -53,6 +53,61 @@ INSERT INTO `favoris` (`id`, `user`, `voie`, `type_fontaine`, `lat`, `lng`) VALU
 (172, 12, 'RUE_DE_L_UNIVERSITE', 'BORNE_FONTAINE', 48.861226066136446, 2.3120031406930814),
 (173, 14, 'CITE_DE_PHALSBOURG', 'FONTAINE_BOIS', 48.855807106340706, 2.385418321658521),
 (174, 12, 'PLACE_DU_MARCHE_SAINT_HONORE', 'FONTAINE_ARCEAU', 48.866557891544986, 2.3313034503184493);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `signalements`
+--
+
+DROP TABLE IF EXISTS `signalements`;
+CREATE TABLE IF NOT EXISTS `signalements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user` int(11) NOT NULL,
+  `voie` text,
+  `type_fontaine` text,
+  `lat` double NOT NULL,
+  `lng` double NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `signalements`
+--
+
+INSERT INTO `signalements` (`id`, `user`, `voie`, `type_fontaine`, `lat`, `lng`) VALUES
+(101, 12, 'AVENUE_DAUMESNIL', 'FONTAINE_WALLACE', 48.84226064759863, 2.3861144131042353),
+(102, 12, 'RUE_AUBER', 'FONTAINE_ARCEAU', 48.87310003291939, 2.328002970199104),
+(103, 9, 'AVENUE_MARCEAU', 'FONTAINE_WALLACE', 48.872488004185314, 2.296449643040021),
+(104, 9, 'JARDIN_DE_L_HOTEL_SALE', 'FONTAINE_BOIS', 48.86016034442325, 2.361375391256717),
+(105, 9, 'RUE_DE_L_ABBE_GROULT', 'FONTAINE_WALLACE', 48.83583215898379, 2.3023397722060936),
+(106, 9, 'ALLEE_ROYALE', 'FONTAINE_BOIS', 48.83515123200755, 2.434002736184597);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pseudo` text NOT NULL,
+  `mdp` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`id`, `pseudo`, `mdp`) VALUES
+(14, 'Nina', 'b443de4b0ff48581d8743a5f5cad5321e40054c2'),
+(13, 'Hugo', '3faf7ed52fa83d583fc670a96bcf92da270d0767'),
+(12, 'bot', 'c71e7261d37a4f6ae4cfb0cbd79081310a237e67'),
+(11, 'Daniel', '3d0f3b9ddcacec30c4008c5e030e6c13a478cb4f'),
+(10, 'Yohan', '41db30f8022117ed68b26c86ad29aaaf5618f1d9'),
+(9, 'ElPatron', '53b539dbf5759996369bf0f8490d0724c40f0a06');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
